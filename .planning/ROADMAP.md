@@ -6,13 +6,13 @@
 
 ## Overview
 
-| # | Phase | Goal | Requirements | Status |
-|---|-------|------|--------------|--------|
-| 1 | Foundation | Build workflow engine and context management | WFE-01 to WFE-05, CTX-01 to CTX-05 | ○ Not Started |
-| 2 | Extraction | Implement algorithm extraction from text | EXT-01 to EXT-06 | ○ Not Started |
-| 3 | Generation | Build code generation from structured steps | GEN-01 to GEN-06 | ○ Not Started |
-| 4 | Execution | Create safe code execution environment | EXE-01 to EXE-06 | ○ Not Started |
-| 5 | Verification | Implement verification and explanation features | VER-01 to VER-05 | ○ Not Started |
+| # | Phase | Goal | Requirements | Status | Plans |
+|---|---|-------|------|--------------|--------|-------|
+| 1 | Foundation | Build workflow engine and context management | WFE-01 to WFE-05, CTX-01 to CTX-05 | ○ Planned | 3 |
+| 2 | Extraction | Implement algorithm extraction from text | EXT-01 to EXT-06 | ○ Not Started | — |
+| 3 | Generation | Build code generation from structured steps | GEN-01 to GEN-06 | ○ Not Started | — |
+| 4 | Execution | Create safe code execution environment | EXE-01 to EXE-06 | ○ Not Started | — |
+| 5 | Verification | Implement verification and explanation features | VER-01 to VER-05 | ○ Not Started | — |
 
 ## Phase Details
 
@@ -41,6 +41,18 @@
 6. All state persisted to files and version controlled
 
 **Dependencies:** None (foundation)
+
+**Plans:** 3 plans in 2 waves
+
+| Wave | Plans | Objective |
+|------|-------|-----------|
+| 1 | 01, 02 | Context Manager persistence; Command and workflow engine |
+| 2 | 03 | Comprehensive test suite |
+
+Plan list:
+- [ ] 01-01-PLAN.md — Context Manager and State Persistence
+- [ ] 01-02-PLAN.md — Workflow Engine and Command Interface  
+- [ ] 01-03-PLAN.md — Test Suite and Verification Infrastructure
 
 ---
 
