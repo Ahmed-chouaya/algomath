@@ -78,6 +78,27 @@ class Step:
             "annotation": self.annotation
         }
 
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "Step":
+        """Create step from dictionary."""
+        return cls(
+            id=data["id"],
+            type=StepType(data["type"]),
+            description=data["description"],
+            inputs=data.get("inputs", []),
+            outputs=data.get("outputs", []),
+            line_refs=data.get("line_refs", []),
+            condition=data.get("condition"),
+            body=data.get("body", []),
+            else_body=data.get("else_body", []),
+            iter_var=data.get("iter_var"),
+            iter_range=data.get("iter_range"),
+            expression=data.get("expression"),
+            call_target=data.get("call_target"),
+            arguments=data.get("arguments", []),
+            annotation=data.get("annotation")
+        )
+
 
 @dataclass
 class Algorithm:
@@ -110,15 +131,43 @@ class Algorithm:
             "source_text": self.source_text
         }
 
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "Algorithm":
+        """Create algorithm from dictionary."""
+        return cls(
+            name=data.get("name", "unnamed"),
+            description=data.get("description", ""),
+            inputs=data.get("inputs", []),
+            outputs=data.get("outputs", []),
+            steps=[Step.from_dict(s) for s in data.get("steps", [])],
+            source_text=data.get("source_text", "")
+        )
 
-def algorithm_to_json(algorithm: Algorithm) -> Dict[str, Any]:
+
+def algorithm_to_json(algorithm: Algorithm) -> str:
     """
-    Convert an Algorithm object to JSON-serializable dictionary.
+    Convert an Algorithm object to JSON string.
 
     Args:
         algorithm: Algorithm to convert
 
     Returns:
-        Dictionary suitable for JSON serialization
+        JSON string representation
     """
-    return algorithm.to_dict()
+    import json
+    return json.dumps(algorithm.to_dict(), indent=2)
+
+
+def algorithm_from_json(json_str: str) -> Algorithm:
+    """
+    Convert a JSON string to an Algorithm object.
+
+    Args:
+        json_str: JSON string to parse
+
+    Returns:
+        Algorithm object
+    """
+    import json
+    data = json.loads(json_str)
+    return Algorithm.from_dict(data)
