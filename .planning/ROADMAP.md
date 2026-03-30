@@ -160,8 +160,8 @@ Plan list:
 | 2 | 03 | Persistence and CLI integration (save_execution, /algo-run command) |
 
 Plan list:
-- [ ] 04-01-PLAN.md — Core sandbox: subprocess isolation, resource limits, timeout, output capture
-- [ ] 04-02-PLAN.md — Error handling: categorization, translation, output formatting, progress display
+- [x] 04-01-PLAN.md — Core sandbox: subprocess isolation, resource limits, timeout, output capture
+- [x] 04-02-PLAN.md — Error handling: categorization, translation, output formatting, progress display
 - [ ] 04-03-PLAN.md — Persistence and CLI: save_execution, /algo-run command, state transitions
 
 ---
