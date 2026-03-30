@@ -8,6 +8,7 @@ This module provides the ContextManager class that orchestrates the entire workf
 - Providing progress reporting
 """
 
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -191,31 +192,83 @@ class ContextManager:
         )
         
         return success
-    
+
+    def save_execution(self, results: Dict[str, Any]) -> Optional[Path]:
+        """
+        Save execution results to algorithm directory.
+
+        Per D-14: Save outputs to .algomath/algorithms/{name}/execution.log
+        Per CTX-03: Preserve execution history across sessions
+
+        Args:
+            results: Execution output from executor
+
+        Returns:
+            Path to execution.log file, or None if not named
+        """
+        state = self.get_current()
+        name = state.current_algorithm
+
+        if not name:
+            return None
+
+        # Build log path per D-14
+        algo_dir = Path(".algomath/algorithms") / name
+        algo_dir.mkdir(parents=True, exist_ok=True)
+
+        log_file = algo_dir / "execution.log"
+
+        # Format log content
+        log_lines = [
+            f"# Execution Log: {name}",
+            f"# Timestamp: {results.get('timestamp', datetime.now().isoformat())}",
+            f"# Status: {results.get('status', 'unknown')}",
+            f"# Runtime: {results.get('execution_time', 'N/A')}s",
+            "",
+            "## Standard Output",
+            results.get('stdout', ''),
+            "",
+            "## Standard Error",
+            results.get('stderr', '') if results.get('stderr') else '(none)',
+            "",
+            "## Error Details" if results.get('error_type') else "",
+            f"Type: {results.get('error_type', 'N/A')}" if results.get('error_type') else "",
+            f"Message: {results.get('error_message', 'N/A')}" if results.get('error_message') else "",
+        ]
+
+        # Write log
+        log_content = '\n'.join(line for line in log_lines if line is not None)
+        log_file.write_text(log_content)
+
+        return log_file
+
     def save_results(self, results: Dict[str, Any]) -> bool:
         """
         Save execution results and advance state.
-        
+
         Args:
             results: Execution output (stdout, stderr, status, etc.)
-            
+
         Returns:
             bool: True if state advanced successfully
         """
         state = self.get_current()
-        
+
         # Save data
         state.data["results"] = results
-        
+
+        # Save execution log per D-14
+        self.save_execution(results)
+
         # Advance state
         success = state.transition_to(WorkflowState.EXECUTION_COMPLETE)
-        
+
         # Persist
         self.state_manager.save_session(
             state,
             persist=state.current_algorithm is not None
         )
-        
+
         return success
     
     def mark_verified(self) -> bool:
