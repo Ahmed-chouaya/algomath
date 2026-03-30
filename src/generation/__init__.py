@@ -18,6 +18,20 @@ from src.generation.code_generator import (
     TemplateCodeGenerator,
     GeneratedCode,
 )
+from src.generation.llm_generator import (
+    LLMCodeGenerator,
+)
+from src.generation.hybrid import (
+    HybridCodeGenerator,
+    HybridGenerationResult,
+)
+from src.generation.errors import (
+    GenerationError,
+    SyntaxGenerationError,
+    ImportGenerationError,
+    LLMGenerationError,
+    ValidationError,
+)
 
 __all__ = [
     # Types
@@ -28,7 +42,16 @@ __all__ = [
     # Templates
     "TemplateRegistry",
     "CodeTemplates",
-    # Generator
+    # Generators
     "TemplateCodeGenerator",
+    "LLMCodeGenerator",
+    "HybridCodeGenerator",
+    "HybridGenerationResult",
     "GeneratedCode",
+    # Errors
+    "GenerationError",
+    "SyntaxGenerationError",
+    "ImportGenerationError",
+    "LLMGenerationError",
+    "ValidationError",
 ]

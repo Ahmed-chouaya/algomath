@@ -58,7 +58,7 @@ def run_generation(context: "ContextManager") -> Dict[str, Any]:
     # Import here to avoid circular imports
     from algomath.context import ContextManager
     from src.extraction.schema import Algorithm
-    from src.generation import TemplateCodeGenerator
+    from src.generation import HybridCodeGenerator
 
     # Progress indicator
     progress = show_progress("Generate", 1, 10)
@@ -101,10 +101,11 @@ def run_generation(context: "ContextManager") -> Dict[str, Any]:
     # Update progress
     progress = show_progress("Generate", 5, 10)
 
-    # Generate code using template generator
+    # Generate code using hybrid generator (Template → LLM → Stub)
     try:
-        generator = TemplateCodeGenerator()
-        generated = generator.generate(algorithm)
+        generator = HybridCodeGenerator()
+        result = generator.generate_for_workflow(algorithm)
+        generated = result['generated']
 
         # Validate syntax
         if not generated.validation_result.is_valid:
@@ -119,6 +120,14 @@ def run_generation(context: "ContextManager") -> Dict[str, Any]:
         # Save to context
         context.save_code(generated.source)
 
+        # Determine message based on strategy
+        strategy = result['strategy']
+        messages = {
+            'template': 'Generated code using templates',
+            'llm': 'Generated code using LLM for complex expressions',
+            'stub': 'Generated stub code (full generation failed)'
+        }
+
         # Final progress
         progress = show_progress("Generate", 10, 10)
 
@@ -127,7 +136,8 @@ def run_generation(context: "ContextManager") -> Dict[str, Any]:
             'progress': progress,
             'lines_of_code': len(generated.source.split('\n')),
             'algorithm_name': generated.algorithm_name,
-            'message': f'Generated {generated.algorithm_name} with type hints',
+            'strategy': strategy,
+            'message': messages.get(strategy, 'Code generated'),
             'next_steps': [
                 'Review code with /algo-review',
                 'Execute with /algo-run',
