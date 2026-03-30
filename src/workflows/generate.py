@@ -39,12 +39,7 @@ def show_progress(phase: str, current: int, total: int) -> str:
 
 def run_generation(context: "ContextManager") -> Dict[str, Any]:
     """
-    Generate Python code from extracted steps.
-
-    This is a stub implementation for Phase 3 that:
-    1. Checks if steps exist in context
-    2. Shows progress indicator
-    3. Returns placeholder for Phase 3 implementation
+    Generate Python code from extracted steps using TemplateCodeGenerator.
 
     Args:
         context: ContextManager instance
@@ -58,24 +53,24 @@ def run_generation(context: "ContextManager") -> Dict[str, Any]:
         >>> ctx.save_steps([{"step": 1, "action": "init"}])
         >>> result = run_generation(ctx)
         >>> print(result['status'])
-        'generation_stub'
+        'code_generated'
     """
     # Import here to avoid circular imports
     from algomath.context import ContextManager
+    from src.extraction.schema import Algorithm
+    from src.generation import TemplateCodeGenerator
 
     # Progress indicator
     progress = show_progress("Generate", 1, 10)
 
-    # Check if steps exist
+    # Load algorithm
     try:
         algorithm_data = context.store.load_session()
-        steps = algorithm_data.get('steps', [])
-
-        if not steps:
+        if not algorithm_data.get('algorithm'):
             return {
                 'status': 'needs_extraction',
                 'progress': progress,
-                'message': 'No algorithm steps found. Extract steps first with /algo-extract',
+                'message': 'No algorithm found. Extract algorithm first with /algo-extract',
                 'next_steps': [
                     'Extract algorithm with /algo-extract',
                     'Check status with /algo-status'
@@ -92,43 +87,59 @@ def run_generation(context: "ContextManager") -> Dict[str, Any]:
             ]
         }
 
+    # Convert to Algorithm object
+    try:
+        algorithm = Algorithm.from_dict(algorithm_data['algorithm'])
+    except Exception as e:
+        return {
+            'status': 'error',
+            'progress': progress,
+            'message': f'Failed to parse algorithm: {e}',
+            'next_steps': ['Extract algorithm again with /algo-extract']
+        }
+
     # Update progress
     progress = show_progress("Generate", 5, 10)
 
-    # Generate placeholder code (Phase 3 will implement actual generation)
-    placeholder_code = '''def algorithm(steps):
-    """
-    Placeholder implementation.
-    Code generation will be implemented in Phase 3.
-    """
-    # Steps to implement:
-'''
+    # Generate code using template generator
+    try:
+        generator = TemplateCodeGenerator()
+        generated = generator.generate(algorithm)
 
-    # Add comments for each step
-    for i, step in enumerate(steps, 1):
-        desc = step.get('description', f'Step {i}')
-        placeholder_code += f'    # {i}. {desc}\\n'
+        # Validate syntax
+        if not generated.validation_result.is_valid:
+            return {
+                'status': 'generation_error',
+                'progress': show_progress("Generate", 7, 10),
+                'error': generated.validation_result.errors,
+                'message': 'Generated code has syntax errors',
+                'next_steps': ['Review extraction with /algo-extract', 'Try again with /algo-generate']
+            }
 
-    placeholder_code += '''
-    pass
-'''
+        # Save to context
+        context.save_code(generated.source)
 
-    # Save code to context
-    context.save_code(placeholder_code)
+        # Final progress
+        progress = show_progress("Generate", 10, 10)
 
-    # Final progress
-    progress = show_progress("Generate", 10, 10)
-
-    return {
-        'status': 'generation_stub',
-        'progress': progress,
-        'lines_of_code': len(placeholder_code.split('\\n')),
-        'functions_generated': 1,
-        'message': 'Code generation stub created. Full implementation in Phase 3.',
-        'next_steps': [
-            'Review code with /algo-verify',
-            'Execute with /algo-run',
-            'Regenerate with /algo-generate',
-            'Check status with /algo-status'
-        ]
-    }
+        return {
+            'status': 'code_generated',
+            'progress': progress,
+            'lines_of_code': len(generated.source.split('\n')),
+            'algorithm_name': generated.algorithm_name,
+            'message': f'Generated {generated.algorithm_name} with type hints',
+            'next_steps': [
+                'Review code with /algo-review',
+                'Execute with /algo-run',
+                'Regenerate with /algo-generate',
+                'Check status with /algo-status'
+            ]
+        }
+    except Exception as e:
+        return {
+            'status': 'generation_error',
+            'progress': show_progress("Generate", 5, 10),
+            'error': str(e),
+            'message': f'Code generation failed: {e}',
+            'next_steps': ['Try again with /algo-generate', 'Review extraction with /algo-extract']
+        }
