@@ -7,20 +7,20 @@
 
 ### Workflow Engine (WFE)
 
-- [ ] **WFE-01**: User can invoke system via natural language commands ("Extract algorithm", "Generate code", "Run it", "Verify")
-- [ ] **WFE-02**: System detects user intent and routes to appropriate workflow automatically
+- [x] **WFE-01**: User can invoke system via natural language commands ("Extract algorithm", "Generate code", "Run it", "Verify")
+- [x] **WFE-02**: System detects user intent and routes to appropriate workflow automatically
 - [ ] **WFE-03**: System maintains context across workflow steps (text, steps, code, results)
 - [ ] **WFE-04**: User can interrupt workflow and resume without losing context
-- [ ] **WFE-05**: System provides clear progress indicators during multi-step workflows
+- [x] **WFE-05**: System provides clear progress indicators during multi-step workflows
 
 ### Extraction (EXT)
 
 - [ ] **EXT-01**: User can input mathematical text describing an algorithm
 - [ ] **EXT-02**: System identifies algorithm boundaries within text
 - [ ] **EXT-03**: System extracts algorithm inputs and outputs
-- [ ] **EXT-04**: System parses algorithm into structured step-by-step representation
-- [ ] **EXT-05**: System handles common mathematical notation (loops, conditionals, assignments)
-- [ ] **EXT-06**: User can review and edit extracted steps before proceeding
+- [x] **EXT-04**: System parses algorithm into structured step-by-step representation
+- [x] **EXT-05**: System handles common mathematical notation (loops, conditionals, assignments)
+- [x] **EXT-06**: User can review and edit extracted steps before proceeding
 
 ### Code Generation (GEN)
 
@@ -99,11 +99,11 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| WFE-01 | Phase 1 | Pending |
-| WFE-02 | Phase 1 | Pending |
+| WFE-01 | Phase 1 | Complete |
+| WFE-02 | Phase 1 | Complete |
 | WFE-03 | Phase 1 | Pending |
 | WFE-04 | Phase 1 | Pending |
-| WFE-05 | Phase 1 | Pending |
+| WFE-05 | Phase 1 | Complete |
 | CTX-01 | Phase 1 | Pending |
 | CTX-02 | Phase 1 | Pending |
 | CTX-03 | Phase 1 | Pending |
@@ -112,9 +112,9 @@
 | EXT-01 | Phase 2 | Pending |
 | EXT-02 | Phase 2 | Pending |
 | EXT-03 | Phase 2 | Pending |
-| EXT-04 | Phase 2 | Pending |
-| EXT-05 | Phase 2 | Pending |
-| EXT-06 | Phase 2 | Pending |
+| EXT-04 | Phase 2 | Complete |
+| EXT-05 | Phase 2 | Complete |
+| EXT-06 | Phase 2 | Complete |
 | GEN-01 | Phase 3 | Pending |
 | GEN-02 | Phase 3 | Pending |
 | GEN-03 | Phase 3 | Pending |
