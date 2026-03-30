@@ -87,7 +87,7 @@ Plan list:
 | 3 | 03 | Error handling, validation, persistence integration, comprehensive tests |
 
 Plan list:
-- [ ] 02-01-PLAN.md — Rule-based extraction: schema, notation, parser, tests
+- [x] 02-01-PLAN.md — Rule-based extraction: schema, notation, parser, tests
 - [x] 02-02-PLAN.md — LLM extraction, prompts, review interface, workflow integration
 - [x] 02-03-PLAN.md — Error handling, validation, persistence, end-to-end tests
 
