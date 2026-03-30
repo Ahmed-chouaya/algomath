@@ -115,6 +115,19 @@ Plan list:
 
 **Dependencies:** Phase 2 (Extracted algorithm steps)
 
+**Plans:** 3 plans in 3 waves
+
+| Wave | Plans | Objective |
+|------|-------|-----------|
+| 1 | 01 | Template-based generation: type inference, templates, TemplateCodeGenerator |
+| 2 | 02 | LLM generation: prompts, LLMCodeGenerator, HybridCodeGenerator with fallback |
+| 3 | 03 | Review interface: CodeValidator, CodeReviewInterface, persistence, approval workflow |
+
+Plan list:
+- [ ] 03-01-PLAN.md — Template-based generation: types, templates, code generator, tests
+- [ ] 03-02-PLAN.md — LLM generation: prompts, LLM generator, hybrid fallback, integration
+- [ ] 03-03-PLAN.md — Review interface: validation, side-by-side review, persistence, approval
+
 ---
 
 ### Phase 4: Execution
