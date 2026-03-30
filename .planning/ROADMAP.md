@@ -11,7 +11,7 @@
 | 1 | Foundation | Build workflow engine and context management | WFE-01 to WFE-05, CTX-01 to CTX-05 | ○ Planned | 3 |
 | 2 | Extraction | Convert mathematical text descriptions into structured algorithm steps | EXT-01 to EXT-06 | ○ Planned | 3 |
 | 3 | Generation | Build code generation from structured steps | GEN-01 to GEN-06 | ○ Not Started | — |
-| 4 | Execution | Create safe code execution environment | EXE-01 to EXE-06 | ○ Not Started | — |
+| 4 | Execution | Create safe code execution environment | EXE-01 to EXE-06 | ○ Planned | 3 |
 | 5 | Verification | Implement verification and explanation features | VER-01 to VER-05 | ○ Not Started | — |
 
 ## Phase Details
@@ -124,9 +124,9 @@ Plan list:
 | 3 | 03 | Review interface: CodeValidator, CodeReviewInterface, persistence, approval workflow |
 
 Plan list:
-- [ ] 03-01-PLAN.md — Template-based generation: types, templates, code generator, tests
-- [ ] 03-02-PLAN.md — LLM generation: prompts, LLM generator, hybrid fallback, integration
-- [ ] 03-03-PLAN.md — Review interface: validation, side-by-side review, persistence, approval
+- [x] 03-01-PLAN.md — Template-based generation: types, templates, code generator, tests
+- [x] 03-02-PLAN.md — LLM generation: prompts, LLM generator, hybrid fallback, integration
+- [x] 03-03-PLAN.md — Review interface: validation, side-by-side review, persistence, approval
 
 ---
 
@@ -151,6 +151,18 @@ Plan list:
 6. Errors explained in terms mathematicians understand
 
 **Dependencies:** Phase 3 (Generated Python code)
+
+**Plans:** 3 plans in 2 waves
+
+| Wave | Plans | Objective |
+|------|-------|-----------|
+| 1 | 01, 02 | Core sandbox (subprocess, timeout, resources, output capture); Error handling and display (translation, formatting) |
+| 2 | 03 | Persistence and CLI integration (save_execution, /algo-run command) |
+
+Plan list:
+- [ ] 04-01-PLAN.md — Core sandbox: subprocess isolation, resource limits, timeout, output capture
+- [ ] 04-02-PLAN.md — Error handling: categorization, translation, output formatting, progress display
+- [ ] 04-03-PLAN.md — Persistence and CLI: save_execution, /algo-run command, state transitions
 
 ---
 
