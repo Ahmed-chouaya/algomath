@@ -32,6 +32,19 @@ from src.generation.errors import (
     LLMGenerationError,
     ValidationError,
 )
+from src.generation.validation import (
+    ValidationResult,
+    CodeValidator,
+)
+from src.generation.review import (
+    CodeReviewInterface,
+    ReviewState,
+    create_review,
+)
+from src.generation.persistence import (
+    CodePersistence,
+    save_to_context,
+)
 
 __all__ = [
     # Types
@@ -54,4 +67,13 @@ __all__ = [
     "ImportGenerationError",
     "LLMGenerationError",
     "ValidationError",
+    # Validation
+    "CodeValidator",
+    # Review
+    "CodeReviewInterface",
+    "ReviewState",
+    "create_review",
+    # Persistence
+    "CodePersistence",
+    "save_to_context",
 ]
