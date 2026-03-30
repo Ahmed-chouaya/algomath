@@ -67,6 +67,8 @@ None currently
 
 ## Recent Changes
 
+- 2026-03-30: Completed 02-02: LLM extraction and review interface
+- 2026-03-30: Requirements EXT-03, EXT-04, EXT-06 completed
 - 2025-03-29: Project initialized
 - 2025-03-29: Requirements defined (32 v1 requirements)
 - 2025-03-29: Roadmap created (5 phases)
