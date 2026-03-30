@@ -5,6 +5,7 @@ This module implements the code execution phase, running
 generated code in a controlled environment.
 """
 
+from datetime import datetime
 from typing import Dict, List, Optional, Any
 import sys
 from pathlib import Path
@@ -13,6 +14,8 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
+
+from src.execution import execute_code, ExecutionConfig, ExecutionStatus
 
 
 def show_progress(phase: str, current: int, total: int) -> str:
@@ -38,20 +41,22 @@ def show_progress(phase: str, current: int, total: int) -> str:
 
 
 def run_execution(
-    context: "ContextManager",
-    inputs: Optional[Dict[str, Any]] = None
+    context,
+    inputs: Optional[Dict[str, Any]] = None,
+    skip_execution: bool = False
 ) -> Dict[str, Any]:
     """
     Execute generated code.
 
-    This is a stub implementation for Phase 4 that:
-    1. Checks if code exists in context
-    2. Shows progress indicator
-    3. Returns placeholder for Phase 4 implementation
+    Per D-21: Auto-triggered after code approval.
+    Per D-22: Transitions CODE_GENERATED → EXECUTING → EXECUTION_COMPLETE.
+    Per D-23: Shows progress during execution.
+    Per D-25: Can skip execution (user controls flow).
 
     Args:
         context: ContextManager instance
         inputs: Optional input data for the algorithm
+        skip_execution: If True, skip execution and return mock results
 
     Returns:
         Dict with execution status and results
@@ -62,13 +67,12 @@ def run_execution(
         >>> ctx.save_code("def test(): pass")
         >>> result = run_execution(ctx)
         >>> print(result['status'])
-        'execution_stub'
+        'success'
     """
-    # Import here to avoid circular imports
-    from algomath.context import ContextManager
-
-    # Progress indicator
-    progress = show_progress("Execute", 1, 10)
+    # Progress: Starting per D-23
+    progress = show_progress("Execute", 2, 10)
+    print(f"\n{progress}")
+    print("Setting up execution environment...")
 
     # Check if code exists
     try:
@@ -86,46 +90,98 @@ def run_execution(
                     'Check status with /algo-status'
                 ]
             }
-    except Exception:
+    except Exception as e:
         return {
             'status': 'error',
             'progress': progress,
-            'message': 'Could not load algorithm data',
+            'message': f'Could not load algorithm data: {e}',
             'next_steps': [
                 'Start over with /algo-extract',
                 'Show help with /algo-help'
             ]
         }
 
-    # Update progress
-    progress = show_progress("Execute", 5, 10)
+    # Per D-25: Skip execution if requested
+    if skip_execution:
+        mock_results = {
+            'status': 'skipped',
+            'stdout': 'Execution skipped per user request.',
+            'stderr': '',
+            'execution_time': 0.0,
+            'return_value': None,
+            'error_type': None,
+            'error_message': None,
+            'timestamp': datetime.now().isoformat()
+        }
+        context.save_results(mock_results)
+        progress = show_progress("Execute", 10, 10)
+        return {
+            'status': 'skipped',
+            'progress': progress,
+            'message': 'Execution skipped. Proceed to verification.',
+            'next_steps': [
+                'Verify manually with /algo-verify',
+                'Run with /algo-run',
+                'Regenerate with /algo-generate'
+            ]
+        }
 
-    # Simulate execution (Phase 4 will implement actual execution)
-    mock_results = {
-        'stdout': 'Execution stub complete.\\nFull implementation in Phase 4.',
-        'stderr': '',
-        'return_value': None,
-        'execution_time': 0.001,
-        'memory_usage': '1.2 MB'
+    # Progress: Executing
+    progress = show_progress("Execute", 5, 10)
+    print(f"\n{progress}")
+    print("Running algorithm (timeout: 30s)...")
+
+    # Configure execution per D-05, D-02
+    config = ExecutionConfig(
+        timeout=30,
+        max_memory_mb=512
+    )
+
+    # Execute code
+    result = execute_code(code, inputs=inputs, config=config)
+
+    # Progress: Saving
+    progress = show_progress("Execute", 8, 10)
+    print(f"\n{progress}")
+    print("Capturing results...")
+
+    # Format results for context per D-16
+    results_data = {
+        'status': result.status.value,
+        'stdout': result.stdout,
+        'stderr': result.stderr,
+        'execution_time': result.runtime_seconds,
+        'return_value': result.return_value,
+        'error_type': result.error_type,
+        'error_message': result.error_message,
+        'timestamp': datetime.now().isoformat()
     }
 
-    # Save results to context
-    context.save_results(mock_results)
+    # Save to context (triggers EXECUTION_COMPLETE transition per D-22)
+    context.save_results(results_data)
 
-    # Final progress
+    # Final progress per D-23
     progress = show_progress("Execute", 10, 10)
 
+    # Build response per D-18
+    if result.status == ExecutionStatus.SUCCESS:
+        message = f"✓ Execution complete in {result.runtime_seconds:.3f}s"
+    elif result.status == ExecutionStatus.TIMEOUT:
+        message = "⚠ Execution timed out (30s limit). Check for infinite loops."
+    else:
+        message = f"✗ Execution failed: {result.error_message or result.error_type or 'Unknown error'}"
+
     return {
-        'status': 'execution_stub',
+        'status': result.status.value,
         'progress': progress,
-        'execution_time': mock_results['execution_time'],
-        'memory_usage': mock_results['memory_usage'],
-        'output': mock_results['stdout'],
-        'message': 'Execution stub complete. Full implementation in Phase 4.',
+        'execution_time': result.runtime_seconds,
+        'stdout': result.stdout[:2000] if result.stdout else '',  # per D-15
+        'stderr': result.stderr[:1000] if result.stderr else '',
+        'error': result.error_message if result.status != ExecutionStatus.SUCCESS else None,
+        'message': message,
         'next_steps': [
             'Verify results with /algo-verify',
             'Run again with /algo-run',
-            'Regenerate code with /algo-generate',
-            'Check status with /algo-status'
+            'Regenerate code with /algo-generate'
         ]
     }
