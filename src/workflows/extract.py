@@ -1,9 +1,4 @@
-"""
-Extraction workflow for AlgoMath.
-
-This module implements the algorithm extraction phase, parsing natural
-language algorithm descriptions into structured step format.
-"""
+"""Extraction workflow for AlgoMath."""
 
 from typing import Dict, List, Optional, Any
 import sys
@@ -13,6 +8,11 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
+
+# Import extraction components
+from src.extraction.llm_extraction import HybridExtractor
+from src.extraction.review import ReviewInterface
+from src.extraction.schema import algorithm_to_json
 
 
 def show_progress(phase: str, current: int, total: int) -> str:
@@ -28,8 +28,8 @@ def show_progress(phase: str, current: int, total: int) -> str:
         Formatted progress bar string
 
     Example:
-        >>> show_progress("Extract", 8, 10)
-        "Extract: ████████░░ 80%"
+    >>> show_progress("Extract", 8, 10)
+    "Extract: ████████░░ 80%"
     """
     if total <= 0:
         return f"{phase}: ░░░░░░░░░░ 0%"
@@ -42,38 +42,25 @@ def show_progress(phase: str, current: int, total: int) -> str:
 
 
 def run_extraction(
-    context: "ContextManager",  # Forward reference
+    context: Any,
     text: Optional[str] = None,
-    name: Optional[str] = None
+    name: Optional[str] = None,
+    skip_review: bool = False
 ) -> Dict[str, Any]:
     """
-    Run the extraction workflow.
+    Run the extraction workflow with hybrid extraction.
 
-    Parses algorithm text and converts it to structured steps.
-    This is a stub implementation for Phase 2.
-
-    Args:
-        context: ContextManager instance for state management
-        text: Optional algorithm text (if None, prompts user)
-        name: Optional algorithm name for saving
-
-    Returns:
-        Dict with status and next steps
-
-    Example:
-        >>> ctx = ContextManager()
-        >>> ctx.start_session()
-        >>> result = run_extraction(ctx, text="Step 1: Initialize...")
-        >>> print(result['status'])
-        'extraction_complete'
+    Per EXT-01, EXT-02, EXT-03, EXT-04, EXT-05, EXT-06.
     """
-    # Progress indicator
-    progress = show_progress("Extract", 1, 10)
+    # Import here to avoid circular imports
+    from algomath.context import ContextManager
+    from algomath.state import WorkflowState
+
+    # Progress: Parsing
+    progress = show_progress("Extract", 1, 5)
 
     # Check if we have algorithm text
     if text is None:
-        # In a real implementation, this would prompt the user
-        # For now, return status asking for input
         return {
             'status': 'needs_input',
             'progress': progress,
@@ -84,36 +71,98 @@ def run_extraction(
             ]
         }
 
-    # Import here to avoid circular imports
-    from algomath.context import ContextManager
-    from algomath.state import WorkflowState
-
     # Save text to context
     context.save_text(text)
 
-    # Update progress
-    progress = show_progress("Extract", 5, 10)
+    # Progress: Extracting
+    progress = show_progress("Extract", 2, 5)
 
-    # Simulate extraction (Phase 2 will implement actual parsing)
-    extracted_steps = [
-        {"step": 1, "action": "placeholder", "description": "Extraction to be implemented in Phase 2"}
-    ]
+    # Run hybrid extraction
+    extractor = HybridExtractor()
+    result = extractor.extract(text, prefer_llm=True)
 
-    context.save_steps(extracted_steps)
+    if not result.success:
+        return {
+            'status': 'extraction_failed',
+            'progress': progress,
+            'errors': result.errors,
+            'message': 'Failed to extract algorithm from text',
+            'next_steps': [
+                'Try again with clearer text',
+                'Cancel extraction'
+            ]
+        }
 
-    # Final progress
-    progress = show_progress("Extract", 10, 10)
+    # Progress: Structuring
+    progress = show_progress("Extract", 3, 5)
 
-    # Return result
+    # Convert steps to JSON-serializable format
+    algorithm = result.algorithm
+    steps_data = []
+    for step in algorithm.steps:
+        steps_data.append({
+            'id': step.id,
+            'type': step.type.value,
+            'description': step.description,
+            'inputs': step.inputs,
+            'outputs': step.outputs,
+            'line_refs': step.line_refs,
+            'condition': step.condition,
+            'body': step.body,
+            'else_body': step.else_body,
+            'iter_var': step.iter_var,
+            'iter_range': step.iter_range,
+            'expression': step.expression,
+            'call_target': step.call_target,
+            'arguments': step.arguments,
+            'annotation': step.annotation
+        })
+
+    # Prepare review interface
+    review = ReviewInterface(algorithm)
+
+    # Progress: Validating
+    progress = show_progress("Extract", 4, 5)
+
+    if skip_review:
+        # Auto-approve
+        context.save_steps(steps_data)
+    else:
+        # Return for review
+        context.save_steps(steps_data)  # Save tentative steps
+
+        return {
+            'status': 'needs_review',
+            'progress': progress,
+            'algorithm': {
+                'name': algorithm.name,
+                'inputs': algorithm.inputs,
+                'outputs': algorithm.outputs,
+                'steps': steps_data
+            },
+            'review_interface': review,
+            'method': result.method,
+            'message': 'Algorithm extracted. Please review before proceeding.',
+            'next_steps': [
+                'Review and approve extracted steps',
+                'Edit steps if needed',
+                'Regenerate with clearer text'
+            ]
+        }
+
+    # Progress: Complete
+    progress = show_progress("Extract", 5, 5)
+
     return {
         'status': 'extraction_complete',
         'progress': progress,
-        'steps_extracted': len(extracted_steps),
-        'algorithm_name': name or 'unnamed',
+        'steps_extracted': len(steps_data),
+        'algorithm_name': algorithm.name or (name if name else 'unnamed'),
+        'method': result.method,
         'next_steps': [
             'Generate code with /algo-generate',
-            'Review extracted text with /algo-status',
-            'Extract a different algorithm with /algo-extract'
+            'Review extracted steps: /algo-status',
+            'Extract a different algorithm: /algo-extract'
         ]
     }
 
