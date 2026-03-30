@@ -9,7 +9,7 @@
 | # | Phase | Goal | Requirements | Status | Plans |
 |---|---|-------|------|--------------|--------|-------|
 | 1 | Foundation | Build workflow engine and context management | WFE-01 to WFE-05, CTX-01 to CTX-05 | ○ Planned | 3 |
-| 2 | Extraction | Implement algorithm extraction from text | EXT-01 to EXT-06 | ○ Not Started | — |
+| 2 | Extraction | Convert mathematical text descriptions into structured algorithm steps | EXT-01 to EXT-06 | ○ Planned | 3 |
 | 3 | Generation | Build code generation from structured steps | GEN-01 to GEN-06 | ○ Not Started | — |
 | 4 | Execution | Create safe code execution environment | EXE-01 to EXE-06 | ○ Not Started | — |
 | 5 | Verification | Implement verification and explanation features | VER-01 to VER-05 | ○ Not Started | — |
@@ -50,9 +50,9 @@
 | 2 | 03 | Comprehensive test suite |
 
 Plan list:
-- [ ] 01-01-PLAN.md — Context Manager and State Persistence
-- [ ] 01-02-PLAN.md — Workflow Engine and Command Interface  
-- [ ] 01-03-PLAN.md — Test Suite and Verification Infrastructure
+- [x] 01-01-PLAN.md — Context Manager and State Persistence
+- [x] 01-02-PLAN.md — Workflow Engine and Command Interface  
+- [x] 01-03-PLAN.md — Test Suite and Verification Infrastructure
 
 ---
 
@@ -77,6 +77,19 @@ Plan list:
 6. Extraction stored in structured format (JSON/Markdown)
 
 **Dependencies:** Phase 1 (Context management, workflow engine)
+
+**Plans:** 3 plans in 3 waves
+
+| Wave | Plans | Objective |
+|------|-------|-----------|
+| 1 | 01 | Rule-based extraction: schema types, notation normalization, parser |
+| 2 | 02 | LLM extraction, prompts, review interface, workflow integration |
+| 3 | 03 | Error handling, validation, persistence integration, comprehensive tests |
+
+Plan list:
+- [ ] 02-01-PLAN.md — Rule-based extraction: schema, notation, parser, tests
+- [ ] 02-02-PLAN.md — LLM extraction, prompts, review interface, workflow integration
+- [ ] 02-03-PLAN.md — Error handling, validation, persistence, end-to-end tests
 
 ---
 
