@@ -12,7 +12,7 @@
 | 2 | Extraction | Convert mathematical text descriptions into structured algorithm steps | EXT-01 to EXT-06 | ○ Planned | 3 |
 | 3 | Generation | Build code generation from structured steps | GEN-01 to GEN-06 | ○ Not Started | — |
 | 4 | Execution | Create safe code execution environment | EXE-01 to EXE-06 | ○ Planned | 3 |
-| 5 | Verification | Implement verification and explanation features | VER-01 to VER-05 | ○ Not Started | — |
+| 5 | Verification | Implement verification and explanation features | VER-01 to VER-05 | ○ Planned | 3 |
 
 ## Phase Details
 
