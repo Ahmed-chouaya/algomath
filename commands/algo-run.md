@@ -11,6 +11,23 @@ Execute generated Python code in a safe sandboxed environment.
 Captures stdout, stderr, and execution results.
 </objective>
 
+<execution>
+Execute the generated code by running:
+```bash
+npx algomath-extract algorun "$@"
+```
+
+Or if algomath-extract is installed globally:
+```bash
+algorun "$@"
+```
+
+This will:
+1. Load the generated Python code
+2. Execute in a sandboxed environment
+3. Capture output and results
+4. Display execution summary
+</execution>
 
 <process>
 Execute code in sandbox:

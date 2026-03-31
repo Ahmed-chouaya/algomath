@@ -10,6 +10,22 @@ tools:
 Display list of all saved algorithms with their status and basic info.
 </objective>
 
+<execution>
+List algorithms by running:
+```bash
+npx algomath-extract algolist "$@"
+```
+
+Or if algomath-extract is installed globally:
+```bash
+algolist "$@"
+```
+
+This will:
+1. Scan .algomath/algorithms/ directory
+2. List all saved algorithms
+3. Display status and basic info for each
+</execution>
 
 <process>
 List algorithms:

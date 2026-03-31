@@ -11,6 +11,23 @@ Verify execution results, compare to expected values, explain algorithm behavior
 and identify potential edge cases.
 </objective>
 
+<execution>
+Execute verification by running:
+```bash
+npx algomath-extract algoverify "$@"
+```
+
+Or if algomath-extract is installed globally:
+```bash
+algoverify "$@"
+```
+
+This will:
+1. Load execution results and algorithm steps
+2. Verify correctness against expected values
+3. Generate explanation of algorithm behavior
+4. Identify edge cases and potential issues
+</execution>
 
 <process>
 Execute verification workflow:

@@ -11,6 +11,23 @@ Generate executable Python code from structured algorithm steps.
 Supports template-based generation (fast, reliable) or LLM-enhanced (for complex expressions).
 </objective>
 
+<execution>
+Execute the code generation by running:
+```bash
+npx algomath-extract algogenerate "$@"
+```
+
+Or if algomath-extract is installed globally:
+```bash
+algogenerate "$@"
+```
+
+This will:
+1. Load the extracted algorithm from .algomath/algorithms/
+2. Generate Python code using template or LLM
+3. Save generated code to .algomath/generated/
+4. Display generation summary
+</execution>
 
 <process>
 Execute code generation workflow:

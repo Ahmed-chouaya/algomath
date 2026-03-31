@@ -15,8 +15,14 @@ Supports automatic extraction or step-by-step with review points.
 <execution>
 Execute the extraction by running the Node.js wrapper:
 ```bash
-npx algoextract "$@"
+npx algomath-extract algoextract "$@"
 ```
+
+Or if algomath-extract is installed globally:
+```bash
+algoextract "$@"
+```
+
 This will:
 1. Parse the provided file or arguments
 2. Extract algorithm steps using LLM
@@ -27,49 +33,50 @@ This will:
 <process>
 Execute extraction workflow:
 
+
 1. **Parse Arguments**
-   - Check if file path provided
-   - Determine mode: auto, step-by-step, or interactive
+- Check if file path provided
+- Determine mode: auto, step-by-step, or interactive
 
 2. **Extract Text from File**
-   - Auto-detect file type (PDF, .txt, .md)
-   - Use pdfplumber for PDFs
-   - Handle encoding issues
-   - Validate extraction success
+- Auto-detect file type (PDF, .txt, .md)
+- Use pdfplumber for PDFs
+- Handle encoding issues
+- Validate extraction success
 
 3. **Parse Algorithm Structure**
-   - Use opencode LLM to parse text
-   - Identify algorithm name
-   - Extract inputs and outputs
-   - Parse step-by-step procedure
-   - Handle mathematical notation
+- Use opencode LLM to parse text
+- Identify algorithm name
+- Extract inputs and outputs
+- Parse step-by-step procedure
+- Handle mathematical notation
 
 4. **Review Point (if step-by-step)**
-   - Display extracted text
-   - Ask user to confirm or edit
-   - Apply user corrections
+- Display extracted text
+- Ask user to confirm or edit
+- Apply user corrections
 
 5. **Generate Structured Steps**
-   - Convert parsed text to Algorithm object
-   - Validate step structure
-   - Check for completeness
+- Convert parsed text to Algorithm object
+- Validate step structure
+- Check for completeness
 
 6. **Review Point (if step-by-step)**
-   - Display structured steps
-   - Show inputs, outputs, step list
-   - Allow editing
+- Display structured steps
+- Show inputs, outputs, step list
+- Allow editing
 
 7. **Save Algorithm**
-   - Create directory: .algomath/algorithms/{name}/
-   - Save source.txt (original text)
-   - Save steps.json (structured)
-   - Save metadata.json (info)
+- Create directory: .algomath/algorithms/{name}/
+- Save source.txt (original text)
+- Save steps.json (structured)
+- Save metadata.json (info)
 
 8. **Display Summary**
-   - Show algorithm name
-   - Show step count
-   - Display next steps
-   - Suggest: /algo-generate
+- Show algorithm name
+- Show step count
+- Display next steps
+- Suggest: /algo-generate
 </process>
 
 <examples>

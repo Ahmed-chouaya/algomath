@@ -10,6 +10,22 @@ tools:
 Display help information, available commands, and usage examples.
 </objective>
 
+<execution>
+Show help by running:
+```bash
+npx algomath-extract algohelp "$@"
+```
+
+Or if algomath-extract is installed globally:
+```bash
+algohelp "$@"
+```
+
+This will display:
+1. Available commands and their descriptions
+2. Usage examples
+3. Workflow information
+</execution>
 
 <process>
 Display help:

@@ -11,6 +11,22 @@ Display current algorithm state, progress, and available next steps.
 Shows workflow state, completion status, and suggestions.
 </objective>
 
+<execution>
+Check status by running:
+```bash
+npx algomath-extract algostatus "$@"
+```
+
+Or if algomath-extract is installed globally:
+```bash
+algostatus "$@"
+```
+
+This will:
+1. Load current algorithm state
+2. Display progress and completion status
+3. Show available next steps
+</execution>
 
 <process>
 Display status:
