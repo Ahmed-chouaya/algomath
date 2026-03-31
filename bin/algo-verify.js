@@ -8,7 +8,6 @@
  */
 
 const { Command } = require('commander');
-const inquirer = require('inquirer');
 const chalk = require('chalk');
 const ora = require('ora');
 const { spawn } = require('child_process');
