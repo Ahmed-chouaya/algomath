@@ -4,6 +4,7 @@ argument-hint: "[file-path] [--auto] [--step] [--name <name>]"
 tools:
   read: true
   write: true
+  Bash: true
 ---
 
 <objective>
@@ -11,6 +12,17 @@ Extract algorithm from PDF or text file using LLM-powered parsing.
 Supports automatic extraction or step-by-step with review points.
 </objective>
 
+<execution>
+Execute the extraction by running the Node.js wrapper:
+```bash
+npx algoextract "$@"
+```
+This will:
+1. Parse the provided file or arguments
+2. Extract algorithm steps using LLM
+3. Save the structured algorithm to .algomath/algorithms/
+4. Display the extraction summary
+</execution>
 
 <process>
 Execute extraction workflow:

@@ -368,6 +368,20 @@ execSync(`sudo chown -R $(whoami) "${parentDir}"`, { stdio: 'inherit' });
   needsElevated = !isWritable(commandDir);
 }
 
+// Clean old algo-*.md files first (to remove outdated commands)
+const existingFiles = fs.readdirSync(commandDir).filter(f => f.startsWith('algo-') && f.endsWith('.md'));
+for (const oldFile of existingFiles) {
+const oldPath = path.join(commandDir, oldFile);
+try {
+fs.unlinkSync(oldPath);
+} catch (e) {
+// If can't delete, try with sudo
+if (!isWindows) {
+execSync(`sudo rm -f "${oldPath}"`, { stdio: 'pipe' });
+}
+}
+}
+
 // Copy command files
 const sourceDir = path.join(__dirname, '..', 'commands');
 const files = fs.readdirSync(sourceDir).filter(f => f.endsWith('.md'));
