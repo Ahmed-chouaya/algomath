@@ -21,11 +21,54 @@ const isGlobal = args.includes('--global') || args.includes('-g');
 const isLocal = args.includes('--local') || args.includes('-l');
 const skipPrompts = isOpencode || isClaude || isGlobal || isLocal;
 
+function compareVersions(v1, v2) {
+  const parts1 = v1.split('.').map(Number);
+  const parts2 = v2.split('.').map(Number);
+  
+  for (let i = 0; i < Math.max(parts1.length, parts2.length); i++) {
+    const p1 = parts1[i] || 0;
+    const p2 = parts2[i] || 0;
+    if (p1 > p2) return 1;
+    if (p1 < p2) return -1;
+  }
+  return 0;
+}
+
+async function checkForUpdates() {
+  try {
+    const latestVersion = execSync('npm view algomath-extract version', { 
+      encoding: 'utf8', 
+      stdio: 'pipe',
+      timeout: 5000 
+    }).trim();
+    
+    const currentVersion = require('../package.json').version;
+    const comparison = compareVersions(currentVersion, latestVersion);
+    
+    if (comparison < 0) {
+      // Current is older than npm
+      console.log(`\n⚠️  A newer version is available: v${latestVersion} (you have v${currentVersion})`);
+      console.log('   Run: npm i -g algomath-extract@latest\n');
+      return { hasUpdate: true, latestVersion, currentVersion };
+    } else if (comparison > 0) {
+      // Current is newer than npm (development/local build)
+      console.log(`\nℹ️  Development version: v${currentVersion} (npm has v${latestVersion})\n`);
+    }
+    return { hasUpdate: false };
+  } catch (e) {
+    // Network error or npm not available, silently continue
+    return { hasUpdate: false };
+  }
+}
+
 async function main() {
 console.log('\n╔════════════════════════════════════════════════════╗');
 console.log('║ AlgoMath Framework Installer ║');
 console.log('║ Mathematical Algorithm Extraction & Code ║');
 console.log('╚════════════════════════════════════════════════════╝\n');
+
+// Check for updates
+await checkForUpdates();
 
 try {
 // Step 1: Check Python
