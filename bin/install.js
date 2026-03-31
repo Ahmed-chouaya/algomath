@@ -62,10 +62,20 @@ async function checkForUpdates() {
 }
 
 async function main() {
-console.log('\n╔════════════════════════════════════════════════════╗');
-console.log('║ AlgoMath Framework Installer ║');
-console.log('║ Mathematical Algorithm Extraction & Code ║');
-console.log('╚════════════════════════════════════════════════════╝\n');
+// Green ANSI color codes
+const GREEN = '\x1b[32m';
+const RESET = '\x1b[0m';
+
+console.log(GREEN + `
+    █████╗ ██╗      ██████╗  ██████╗ ███╗   ███╗ █████╗ ████████╗██╗  ██╗
+   ██╔══██╗██║     ██╔════╝ ██╔═══██╗████╗ ████║██╔══██╗╚══██╔══╝██║  ██║
+   ███████║██║     ██║  ███╗██║   ██║██╔████╔██║███████║   ██║   ███████║
+   ██╔══██║██║     ██║   ██║██║   ██║██║╚██╔╝██║██╔══██║   ██║   ██╔══██║
+   ██║  ██║███████╗╚██████╔╝╚██████╔╝██║ ╚═╝ ██║██║  ██║   ██║   ██║  ██║
+   ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+                    Framework Installer v1.0.11
+              Mathematical Algorithm Extraction & Code
+` + RESET + '\n');
 
 // Check for updates
 await checkForUpdates();

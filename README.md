@@ -1,3 +1,12 @@
+```
+    █████╗ ██╗      ██████╗  ██████╗ ███╗   ███╗ █████╗ ████████╗██╗  ██╗
+   ██╔══██╗██║     ██╔════╝ ██╔═══██╗████╗ ████║██╔══██╗╚══██╔══╝██║  ██║
+   ███████║██║     ██║  ███╗██║   ██║██╔████╔██║███████║   ██║   ███████║
+   ██╔══██║██║     ██║   ██║██║   ██║██║╚██╔╝██║██╔══██║   ██║   ██╔══██║
+   ██║  ██║███████╗╚██████╔╝╚██████╔╝██║ ╚═╝ ██║██║  ██║   ██║   ██║  ██║
+   ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+```
+
 # AlgoMath Framework
 
 **AlgoMath** transforms mathematical algorithm descriptions from PDFs and text files into executable Python code through an intuitive workflow integrated with opencode.
