@@ -1,16 +1,17 @@
 {
-  "name": "algomath",
+  "name": "algomath-extract",
   "version": "1.0.0",
   "description": "AlgoMath Framework - Transform AI assistants into reliable mathematical problem-solving environments",
   "main": "index.js",
   "bin": {
-    "algo-extract": "./bin/algo-extract.js",
-    "algo-generate": "./bin/algo-generate.js",
-    "algo-run": "./bin/algo-run.js",
-    "algo-verify": "./bin/algo-verify.js",
-    "algo-status": "./bin/algo-status.js",
-    "algo-list": "./bin/algo-list.js",
-    "algo-help": "./bin/algo-help.js"
+    "algomath": "bin/install.js",
+    "algoextract": "bin/algo-extract.js",
+    "algogenerate": "bin/algo-generate.js",
+    "algorun": "bin/algo-run.js",
+    "algoverify": "bin/algo-verify.js",
+    "algostatus": "bin/algo-status.js",
+    "algolist": "bin/algo-list.js",
+    "algohelp": "bin/algo-help.js"
   },
   "scripts": {
     "postinstall": "node scripts/postinstall.js",
