@@ -365,19 +365,12 @@ const files = fs.readdirSync(sourceDir).filter(f => f.endsWith('.md'));
 for (const file of files) {
 const source = path.join(sourceDir, file);
 const dest = path.join(commandDir, file);
-// For local installs that needed sudo, try regular copy first, then sudo if needed
-if (needsElevated && location === 'local' && !isWindows) {
-try {
-fs.copyFileSync(source, dest);
-} catch (e) {
-// If regular copy fails, use sudo
+
+// For any install that needs elevated permissions, use sudo
+if (needsElevated && !isWindows) {
+// Use sudo to copy, then fix ownership
 execSync(`sudo cp "${source}" "${dest}"`, { stdio: 'pipe' });
-// Fix ownership after sudo copy
 execSync(`sudo chown $(whoami) "${dest}"`, { stdio: 'pipe' });
-}
-} else if (needsElevated && !isWindows) {
-// Global install with sudo
-execSync(`sudo cp "${source}" "${dest}"`, { stdio: 'pipe' });
 } else {
 fs.copyFileSync(source, dest);
 }
