@@ -22,24 +22,46 @@ from algomath.state import WorkflowState
 from src.workflows.run import run_execution
 
 
-def extract_command(text: str, name: Optional[str] = None) -> Dict[str, Any]:
+def extract_command(text: Optional[str] = None, file: Optional[str] = None, name: Optional[str] = None) -> Dict[str, Any]:
     """
-    Extract algorithm from mathematical text.
+    Extract algorithm from mathematical text or file.
 
     Args:
         text: Mathematical text describing an algorithm
+        file: Path to PDF or text file
         name: Optional name for the algorithm
 
     Returns:
         Dict with extraction status and results
     """
     from src.workflows.extract import extract_algorithm
+    from src.extraction.pdf_processor import PDFProcessor
 
     ctx = ContextManager()
     ctx.start_session()
 
     if name:
         ctx.create_algorithm(name)
+
+    # Handle file extraction
+    if file:
+        processor = PDFProcessor()
+        result = processor.extract_text(file)
+        if not result.success:
+            return {
+                'status': 'error',
+                'message': f"Failed to extract from file: {result.error}",
+                'next_steps': ['Check file path', 'Try with text input instead']
+            }
+        text = result.text
+        print(f"Extracted {len(text)} characters from {result.file_type} file ({result.page_count} pages)")
+
+    if not text:
+        return {
+            'status': 'error',
+            'message': 'No text or file provided for extraction',
+            'next_steps': ['Provide text directly', 'Use --file to specify a file path']
+        }
 
     result = extract_algorithm(ctx, text)
     return result
