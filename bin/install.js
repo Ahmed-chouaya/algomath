@@ -368,7 +368,9 @@ fs.copyFileSync(source, dest);
 }
 }
 
-// Create opencode.json if it doesn't exist
+// Create opencode.json only for global installs
+// Local installs should not create this file as it's not recognized by opencode
+if (location === 'global') {
 const configPath = path.join(targetDir, 'opencode.json');
 if (!fs.existsSync(configPath)) {
 const config = {
@@ -406,6 +408,7 @@ execSync(`sudo cp "${tempConfig}" "${configPath}"`, { stdio: 'pipe' });
 fs.unlinkSync(tempConfig);
 } else {
 fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+}
 }
 }
 
