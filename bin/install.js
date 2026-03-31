@@ -328,7 +328,7 @@ throw new Error(`Unknown runtime: ${runtime}`);
 }
 
 // Check if we need elevated permissions
-const needsElevated = !fs.existsSync(targetDir) || !isWritable(targetDir);
+let needsElevated = !fs.existsSync(targetDir) || !isWritable(targetDir);
 const isWindows = platform === 'win32';
 const isMac = platform === 'darwin';
 
@@ -345,16 +345,17 @@ execSync(`sudo mkdir -p "${commandDir}"`, { stdio: 'inherit' });
 const parentDir = path.dirname(targetDir);
 execSync(`sudo chown -R $(whoami) "${parentDir}"`, { stdio: 'inherit' });
 } else if (needsElevated && location === 'local') {
-// Local install but permissions needed - try sudo
-console.log(` Installing locally requires elevated permissions...`);
-console.log(` This happens when .opencode was previously created with sudo.`);
-console.log(` Running with sudo...\n`);
+  // Local install but permissions needed - try sudo
+  console.log(` Installing locally requires elevated permissions...`);
+  console.log(` This happens when .opencode was previously created with sudo.`);
+  console.log(` Running with sudo...\n`);
 
-execSync(`sudo mkdir -p "${commandDir}"`, { stdio: 'inherit' });
-// Fix ownership so user can write to it
-execSync(`sudo chown -R $(whoami) "${targetDir}"`, { stdio: 'inherit' });
-} else {
-fs.mkdirSync(commandDir, { recursive: true });
+  execSync(`sudo mkdir -p "${commandDir}"`, { stdio: 'inherit' });
+  // Fix ownership so user can write to it
+  execSync(`sudo chown -R $(whoami) "${targetDir}"`, { stdio: 'inherit' });
+  
+  // Recalculate needsElevated after fixing permissions
+  needsElevated = !isWritable(commandDir);
 }
 
 // Copy command files
