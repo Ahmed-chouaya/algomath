@@ -33,6 +33,7 @@
   "files": [
     "bin/",
     "scripts/",
+    "commands/",
     "src/",
     "requirements.txt",
     "README.md"
