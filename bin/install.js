@@ -135,27 +135,51 @@ return cmd;
 return null;
 }
 
-async function promptForRuntimes() {
-// Simple prompt (in real version would use inquirer)
-console.log('Select runtime(s):');
-console.log(' 1. OpenCode (recommended)');
-console.log(' 2. Claude Code');
-console.log(' 3. Both');
-console.log(' 4. Skip\n');
+const readline = require('readline');
 
-// For now, auto-select OpenCode
-console.log('Auto-selecting: OpenCode\n');
-return ['opencode'];
+function askQuestion(query) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  return new Promise(resolve => rl.question(query, ans => {
+    rl.close();
+    resolve(ans);
+  }));
+}
+
+async function promptForRuntimes() {
+  console.log('\n📦 Select runtime(s) to install:');
+  console.log(' 1. OpenCode (recommended)');
+  console.log(' 2. Claude Code');
+  console.log(' 3. Both');
+  console.log(' 4. Skip\n');
+
+  const answer = await askQuestion('Enter choice (1-4) [1]: ');
+  
+  switch (answer.trim()) {
+    case '2': return ['claude'];
+    case '3': return ['opencode', 'claude'];
+    case '4': return [];
+    case '1':
+    case '':
+    default: return ['opencode'];
+  }
 }
 
 async function promptForLocation() {
-console.log('Installation location:');
-console.log(' 1. Global (~/.opencode/) - All projects');
-console.log(' 2. Local (./.opencode/) - This project only\n');
+  console.log('\n📂 Select installation location:');
+  console.log(' 1. Global (~/.config/opencode/) - Available in all projects');
+  console.log(' 2. Local (./.opencode/) - This project only\n');
 
-// For now, auto-select global
-console.log('Auto-selecting: Global\n');
-return 'global';
+  const answer = await askQuestion('Enter choice (1-2) [1]: ');
+  
+  switch (answer.trim()) {
+    case '2': return 'local';
+    case '1':
+    case '':
+    default: return 'global';
+  }
 }
 
 function checkPythonDeps() {
