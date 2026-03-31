@@ -1,0 +1,27 @@
+{
+  "name": "dijkstra_shortest_path",
+  "description": "Find shortest paths using Dijkstra algorithm",
+  "inputs": [
+    {
+      "name": "graph",
+      "description": "Adjacency matrix"
+    },
+    {
+      "name": "start",
+      "description": "Start node"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "distances",
+      "description": "Shortest distances"
+    }
+  ],
+  "step_count": 3,
+  "saved_at": "2026-03-30T11:24:48.344492",
+  "review": {
+    "is_edited": false,
+    "is_approved": true,
+    "approved_at": "2026-03-30T11:24:48.344195"
+  }
+}

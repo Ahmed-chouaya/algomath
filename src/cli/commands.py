@@ -134,37 +134,85 @@ def run_command(
     return result
 
 
-def verify_command() -> Dict[str, Any]:
+def verify_command(
+    expected: Optional[Any] = None,
+    step: Optional[int] = None,
+    detailed: bool = False,
+    diagnostic: bool = False
+) -> Dict[str, Any]:
     """
-    Verify execution results.
+    Verify execution results with /algo-verify.
+
+    Per D-01: Quick inline summary shown automatically
+    Per D-02: Full verification via this command
+    Per D-03: Diagnostic mode for failed executions
+    Per D-06: Detailed explanation with --detailed
+    Per D-09: Interactive expected results prompt
+    Per D-22: Diagnostic mode with --diagnostic
+
+    Args:
+        expected: Optional expected output for comparison
+        step: Optional step ID for detailed explanation (VER-05)
+        detailed: If True, generate detailed step-by-step explanation
+        diagnostic: If True, run diagnostic mode for failed executions
 
     Returns:
         Dict with verification status and results
     """
+    from src.workflows.verify import run_verification, verify_step
+
     ctx = ContextManager()
     ctx.start_session()
 
     current = ctx.get_current()
 
-    if current.current_state != WorkflowState.EXECUTION_COMPLETE:
+    # Check current state per D-02, D-25
+    if current.current_state == WorkflowState.VERIFIED:
+        # Already verified - show cached report
+        algorithm_data = ctx.store.load_session()
         return {
-            'status': 'not_ready',
-            'message': 'No execution results to verify. Run code first.',
+            'status': 'already_verified',
+            'message': 'Algorithm already verified. Run again for fresh verification.',
+            'last_verification': algorithm_data.get('verification', {}),
             'next_steps': [
-                'Execute with /algo-run',
+                'Re-verify with /algo-verify',
+                'Extract new with /algo-extract',
                 'Check status with /algo-status'
             ]
         }
 
-    # TODO: Implement verification logic in Phase 5
-    return {
-        'status': 'pending',
-        'message': 'Verification not yet implemented (Phase 5)',
-        'next_steps': [
-            'Review results in /algo-status',
-            'Run again with /algo-run'
-        ]
-    }
+    if current.current_state not in [WorkflowState.EXECUTION_COMPLETE, WorkflowState.CODE_GENERATED]:
+        return {
+            'status': 'not_ready',
+            'message': f"Cannot verify: current state is {current.current_state.value}",
+            'required_state': 'execution_complete',
+            'next_steps': [
+                'Run code first with /algo-run',
+                'Check status with /algo-status'
+            ]
+        }
+
+    # Handle step-specific explanation per VER-05
+    if step is not None:
+        result = verify_step(ctx, step)
+        return result
+
+    # Interactive prompt for expected results per D-09
+    if expected is None and not diagnostic:
+        # Note: In actual CLI, this would prompt user
+        # For now, proceed without comparison
+        pass
+
+    # Run full verification per D-02
+    print(f"Verifying algorithm: {current.current_algorithm or '(unnamed)'}...")
+    result = run_verification(
+        ctx,
+        expected=expected,
+        detailed=detailed,
+        diagnostic=diagnostic
+    )
+
+    return result
 
 
 def status_command() -> Dict[str, Any]:
@@ -239,6 +287,9 @@ def help_command() -> Dict[str, Any]:
         ('/algo-run', 'Execute generated code', 'CODE_GENERATED'),
         ('/algo-run --skip', 'Skip execution (proceed to verify)', 'CODE_GENERATED'),
         ('/algo-verify', 'Verify execution results', 'EXECUTION_COMPLETE'),
+        ('/algo-verify --step N', 'Explain step N in detail', 'EXECUTION_COMPLETE'),
+        ('/algo-verify --detailed', 'Show detailed explanation', 'EXECUTION_COMPLETE'),
+        ('/algo-verify --diagnostic', 'Diagnose failed execution', 'EXECUTION_COMPLETE'),
         ('/algo-status', 'Show current state and progress', 'Any'),
         ('/algo-list', 'List saved algorithms', 'Any'),
         ('/algo-help', 'Show this help', 'Any'),

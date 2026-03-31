@@ -15,9 +15,9 @@
 
 ### Extraction (EXT)
 
-- [ ] **EXT-01**: User can input mathematical text describing an algorithm
-- [ ] **EXT-02**: System identifies algorithm boundaries within text
-- [ ] **EXT-03**: System extracts algorithm inputs and outputs
+- [x] **EXT-01**: User can input mathematical text describing an algorithm
+- [x] **EXT-02**: System identifies algorithm boundaries within text
+- [x] **EXT-03**: System extracts algorithm inputs and outputs
 - [x] **EXT-04**: System parses algorithm into structured step-by-step representation
 - [x] **EXT-05**: System handles common mathematical notation (loops, conditionals, assignments)
 - [x] **EXT-06**: User can review and edit extracted steps before proceeding
@@ -33,12 +33,12 @@
 
 ### Execution (EXE)
 
-- [ ] **EXE-01**: System executes generated code in sandboxed environment
-- [ ] **EXE-02**: System captures stdout and stderr from execution
-- [ ] **EXE-03**: System implements timeout protection (e.g., 30 seconds)
-- [ ] **EXE-04**: System restricts file system access (sandboxed)
-- [ ] **EXE-05**: System reports execution status (success/failure) clearly
-- [ ] **EXE-06**: System provides meaningful error messages on failure
+- [x] **EXE-01**: System executes generated code in sandboxed environment
+- [x] **EXE-02**: System captures stdout and stderr from execution
+- [x] **EXE-03**: System implements timeout protection (e.g., 30 seconds)
+- [x] **EXE-04**: System restricts file system access (sandboxed)
+- [x] **EXE-05**: System reports execution status (success/failure) clearly
+- [x] **EXE-06**: System provides meaningful error messages on failure
 
 ### Verification (VER)
 
@@ -109,9 +109,9 @@
 | CTX-03 | Phase 1 | Pending |
 | CTX-04 | Phase 1 | Pending |
 | CTX-05 | Phase 1 | Pending |
-| EXT-01 | Phase 2 | Pending |
-| EXT-02 | Phase 2 | Pending |
-| EXT-03 | Phase 2 | Pending |
+| EXT-01 | Phase 2 | Complete |
+| EXT-02 | Phase 2 | Complete |
+| EXT-03 | Phase 2 | Complete |
 | EXT-04 | Phase 2 | Complete |
 | EXT-05 | Phase 2 | Complete |
 | EXT-06 | Phase 2 | Complete |
@@ -121,12 +121,12 @@
 | GEN-04 | Phase 3 | Pending |
 | GEN-05 | Phase 3 | Pending |
 | GEN-06 | Phase 3 | Pending |
-| EXE-01 | Phase 4 | Pending |
-| EXE-02 | Phase 4 | Pending |
-| EXE-03 | Phase 4 | Pending |
-| EXE-04 | Phase 4 | Pending |
-| EXE-05 | Phase 4 | Pending |
-| EXE-06 | Phase 4 | Pending |
+| EXE-01 | Phase 4 | Complete |
+| EXE-02 | Phase 4 | Complete |
+| EXE-03 | Phase 4 | Complete |
+| EXE-04 | Phase 4 | Complete |
+| EXE-05 | Phase 4 | Complete |
+| EXE-06 | Phase 4 | Complete |
 | VER-01 | Phase 5 | Pending |
 | VER-02 | Phase 5 | Pending |
 | VER-03 | Phase 5 | Pending |
