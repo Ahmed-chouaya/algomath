@@ -73,7 +73,7 @@ console.log(GREEN + `
    ██╔══██║██║     ██║   ██║██║   ██║██║╚██╔╝██║██╔══██║   ██║   ██╔══██║
    ██║  ██║███████╗╚██████╔╝╚██████╔╝██║ ╚═╝ ██║██║  ██║   ██║   ██║  ██║
    ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
-                    Framework Installer v1.0.15
+                    Framework Installer v1.0.16
               Mathematical Algorithm Extraction & Code
 ` + RESET + '\n');
 
