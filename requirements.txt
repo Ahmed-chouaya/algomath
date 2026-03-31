@@ -1,0 +1,20 @@
+# AlgoMath Python Dependencies
+
+# PDF Processing
+pdfplumber>=0.10.0
+pymupdf>=1.23.0
+
+# Data Validation
+pydantic>=2.0.0
+
+# Type Hints
+typing-extensions>=4.0.0
+
+# Testing (optional)
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Development (optional)
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0

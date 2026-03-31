@@ -1,0 +1,56 @@
+{
+  "name": "algomath",
+  "version": "1.0.0",
+  "description": "AlgoMath Framework - Transform AI assistants into reliable mathematical problem-solving environments",
+  "main": "index.js",
+  "bin": {
+    "algo-extract": "./bin/algo-extract.js",
+    "algo-generate": "./bin/algo-generate.js",
+    "algo-run": "./bin/algo-run.js",
+    "algo-verify": "./bin/algo-verify.js",
+    "algo-status": "./bin/algo-status.js",
+    "algo-list": "./bin/algo-list.js",
+    "algo-help": "./bin/algo-help.js"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js",
+    "test": "node scripts/test.js"
+  },
+  "keywords": [
+    "algorithm",
+    "mathematics",
+    "ai",
+    "code-generation",
+    "extraction",
+    "verification"
+  ],
+  "author": "AlgoMath Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "src/",
+    "requirements.txt",
+    "README.md"
+  ],
+  "dependencies": {
+    "commander": "^11.0.0",
+    "inquirer": "^9.2.0",
+    "chalk": "^5.3.0",
+    "ora": "^7.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/algomath.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/algomath/issues"
+  },
+  "homepage": "https://github.com/yourusername/algomath#readme"
+}
