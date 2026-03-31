@@ -368,9 +368,9 @@ const dest = path.join(commandDir, file);
 
 // For any install that needs elevated permissions, use sudo
 if (needsElevated && !isWindows) {
-// Use sudo to copy, then fix ownership
-execSync(`sudo cp "${source}" "${dest}"`, { stdio: 'pipe' });
-execSync(`sudo chown $(whoami) "${dest}"`, { stdio: 'pipe' });
+// Use sudo to copy (inherit stdio so user sees password prompt), then fix ownership
+execSync(`sudo cp "${source}" "${dest}"`, { stdio: 'inherit' });
+execSync(`sudo chown $(whoami) "${dest}"`, { stdio: 'inherit' });
 } else {
 fs.copyFileSync(source, dest);
 }
