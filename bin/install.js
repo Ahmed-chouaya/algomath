@@ -332,24 +332,27 @@ const needsElevated = !fs.existsSync(targetDir) || !isWritable(targetDir);
 const isWindows = platform === 'win32';
 const isMac = platform === 'darwin';
 
-if (needsElevated) {
-console.log(` Installing to ${runtime} requires elevated permissions...`);
-if (isWindows) {
-console.log(` Please run this installer as Administrator.`);
-console.log(` Right-click Command Prompt/PowerShell and select 'Run as Administrator'.`);
-process.exit(1);
-} else {
-console.log(` Running with sudo...`);
-}
-}
-
 // Create directories
 const commandDir = path.join(targetDir, 'command');
-if (needsElevated && !isWindows) {
+
+if (needsElevated && location !== 'local' && !isWindows) {
+// Global install with elevated permissions needed
+console.log(` Installing to ${runtime} requires elevated permissions...`);
+console.log(` Running with sudo...`);
+
 execSync(`sudo mkdir -p "${commandDir}"`, { stdio: 'inherit' });
 // Ensure the directory is writable by the user for future updates
 const parentDir = path.dirname(targetDir);
 execSync(`sudo chown -R $(whoami) "${parentDir}"`, { stdio: 'inherit' });
+} else if (needsElevated && location === 'local') {
+// Local install but permissions needed - try sudo
+console.log(` Installing locally requires elevated permissions...`);
+console.log(` This happens when .opencode was previously created with sudo.`);
+console.log(` Running with sudo...\n`);
+
+execSync(`sudo mkdir -p "${commandDir}"`, { stdio: 'inherit' });
+// Fix ownership so user can write to it
+execSync(`sudo chown -R $(whoami) "${targetDir}"`, { stdio: 'inherit' });
 } else {
 fs.mkdirSync(commandDir, { recursive: true });
 }
@@ -361,7 +364,18 @@ const files = fs.readdirSync(sourceDir).filter(f => f.endsWith('.md'));
 for (const file of files) {
 const source = path.join(sourceDir, file);
 const dest = path.join(commandDir, file);
-if (needsElevated && !isWindows) {
+// For local installs that needed sudo, try regular copy first, then sudo if needed
+if (needsElevated && location === 'local' && !isWindows) {
+try {
+fs.copyFileSync(source, dest);
+} catch (e) {
+// If regular copy fails, use sudo
+execSync(`sudo cp "${source}" "${dest}"`, { stdio: 'pipe' });
+// Fix ownership after sudo copy
+execSync(`sudo chown $(whoami) "${dest}"`, { stdio: 'pipe' });
+}
+} else if (needsElevated && !isWindows) {
+// Global install with sudo
 execSync(`sudo cp "${source}" "${dest}"`, { stdio: 'pipe' });
 } else {
 fs.copyFileSync(source, dest);
