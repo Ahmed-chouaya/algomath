@@ -8,23 +8,28 @@
 
 ## Installation
 
-### Quick Install
+### Quick Install (Recommended)
 ```bash
-npx algomath@latest
+# Global install (no sudo needed)
+sudo npx algomath-extract@latest
 ```
 
-The installer will:
+The interactive installer will:
 1. Check for Python 3.11+ (auto-install guidance if missing)
-2. Install to OpenCode (and optionally Claude Code)
-3. Install Python dependencies (pdfplumber, pydantic)
+2. Ask which runtime to install to (OpenCode, Claude Code, or both)
+3. Ask for installation location (global or local)
+4. Install Python dependencies (pdfplumber, pydantic)
+5. Copy command files to the selected runtime
+
+> **Note:** Use `sudo` when installing globally or locally if your `.opencode` directory was previously created with elevated permissions.
 
 ### Manual Install
 ```bash
 # Global install
-npm install -g algomath
+sudo npm install -g algomath-extract
 
 # Or local install per-project
-npm install algomath
+npm install algomath-extract
 ```
 
 ---
@@ -81,6 +86,20 @@ Verifies correctness with:
 | `/algo-status` | Show current state | Info |
 | `/algo-list` | List saved algorithms | Info |
 | `/algo-help` | Show help | Info |
+
+### CLI Commands (via npm)
+
+After installation, you can also use these CLI commands:
+
+| Command | Description |
+|---------|-------------|
+| `npx algoextract <file>` | Extract from command line |
+| `npx algogenerate` | Generate code from CLI |
+| `npx algorun` | Run from CLI |
+| `npx algoverify` | Verify from CLI |
+| `npx algostatus` | Check status |
+| `npx algolist` | List algorithms |
+| `npx algohelp` | Show help |
 
 ---
 
