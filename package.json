@@ -4,6 +4,7 @@
   "description": "AlgoMath Framework - Transform AI assistants into reliable mathematical problem-solving environments",
   "main": "index.js",
   "bin": {
+    "algomath-extract": "bin/install.js",
     "algomath": "bin/install.js",
     "algoextract": "bin/algo-extract.js",
     "algogenerate": "bin/algo-generate.js",
