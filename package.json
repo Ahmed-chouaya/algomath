@@ -1,6 +1,6 @@
 {
   "name": "algomath-extract",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "AlgoMath Framework - Transform AI assistants into reliable mathematical problem-solving environments",
   "main": "index.js",
   "bin": {
