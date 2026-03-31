@@ -11,11 +11,6 @@ Verify execution results, compare to expected values, explain algorithm behavior
 and identify potential edge cases.
 </objective>
 
-<execution_context>
-@/home/milgraph/Projects/algo_framework/src/verification/checker.py
-@/home/milgraph/Projects/algo_framework/src/verification/explainer.py
-@/home/milgraph/Projects/algo_framework/src/verification/edge_cases.py
-</execution_context>
 
 <process>
 Execute verification workflow:

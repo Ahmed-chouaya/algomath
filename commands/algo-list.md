@@ -10,9 +10,6 @@ tools:
 Display list of all saved algorithms with their status and basic info.
 </objective>
 
-<execution_context>
-@/home/milgraph/Projects/algo_framework/src/cli/commands.py
-</execution_context>
 
 <process>
 List algorithms:

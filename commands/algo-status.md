@@ -11,9 +11,6 @@ Display current algorithm state, progress, and available next steps.
 Shows workflow state, completion status, and suggestions.
 </objective>
 
-<execution_context>
-@/home/milgraph/Projects/algo_framework/src/cli/commands.py
-</execution_context>
 
 <process>
 Display status:

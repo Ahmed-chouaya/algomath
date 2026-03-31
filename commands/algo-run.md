@@ -11,9 +11,6 @@ Execute generated Python code in a safe sandboxed environment.
 Captures stdout, stderr, and execution results.
 </objective>
 
-<execution_context>
-@/home/milgraph/Projects/algo_framework/src/execution/sandbox.py
-</execution_context>
 
 <process>
 Execute code in sandbox:

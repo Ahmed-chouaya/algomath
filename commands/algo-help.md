@@ -10,9 +10,6 @@ tools:
 Display help information, available commands, and usage examples.
 </objective>
 
-<execution_context>
-@/home/milgraph/Projects/algo_framework/README.md
-</execution_context>
 
 <process>
 Display help:

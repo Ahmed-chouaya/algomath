@@ -11,10 +11,6 @@ Extract algorithm from PDF or text file using LLM-powered parsing.
 Supports automatic extraction or step-by-step with review points.
 </objective>
 
-<execution_context>
-@/home/milgraph/Projects/algo_framework/src/extraction/pdf_processor.py
-@/home/milgraph/Projects/algo_framework/src/extraction/llm_extractor.py
-</execution_context>
 
 <process>
 Execute extraction workflow:

@@ -11,10 +11,6 @@ Generate executable Python code from structured algorithm steps.
 Supports template-based generation (fast, reliable) or LLM-enhanced (for complex expressions).
 </objective>
 
-<execution_context>
-@/home/milgraph/Projects/algo_framework/src/generation/code_generator.py
-@/home/milgraph/Projects/algo_framework/src/generation/llm_generator.py
-</execution_context>
 
 <process>
 Execute code generation workflow:
