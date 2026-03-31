@@ -4,6 +4,7 @@ argument-hint: "[--step <N>] [--detailed] [--diagnostic] [--expected <value>]"
 tools:
   read: true
   write: true
+  Bash: true
 ---
 
 <objective>
@@ -13,13 +14,20 @@ and identify potential edge cases.
 
 <execution>
 Execute verification by running:
+
+**Option 1 - Using npx (no install required):**
 ```bash
-npx algomath-extract algoverify "$@"
+npx -p algomath-extract algoverify "$@"
 ```
 
-Or if algomath-extract is installed globally:
+**Option 2 - If installed globally:**
 ```bash
 algoverify "$@"
+```
+
+**Option 3 - If installed locally in project:**
+```bash
+./node_modules/.bin/algoverify "$@"
 ```
 
 This will:
@@ -32,85 +40,79 @@ This will:
 <process>
 Execute verification workflow:
 
+
 1. **Load Execution Results**
-   - Read execution.log
-   - Load algorithm steps
-   - Get generated code
+- Read execution.log
+- Load algorithm steps
+- Check execution status
 
-2. **Verify Execution**
-   - Check if execution succeeded
-   - Verify no errors
-   - Validate output present
+2. **Check Results**
+- Compare output to expected
+- Validate return codes
+- Check for errors
+- Verify output format
 
-3. **Compare Results (if --expected)**
-   - Compare actual vs expected output
-   - Support numeric tolerance for floats
-   - Show differences
+3. **Generate Explanation**
+- Explain what the algorithm does
+- Describe each step
+- Show data flow
+- Explain mathematical concepts
 
-4. **Generate Explanation**
-   - Brief mode: 1-2 sentence summary
-   - Detailed mode: Step-by-step walkthrough
-   - Step mode: Explain specific step N
+4. **Identify Edge Cases**
+- Empty inputs
+- Single element
+- Maximum values
+- Boundary conditions
+- Error conditions
 
-5. **Detect Edge Cases**
-   - Empty inputs
-   - Boundary values
-   - Division by zero
-   - Array bounds
-   - Infinite loops
+5. **Suggest Tests**
+- Propose test cases
+- Suggest inputs to try
+- Recommend validations
 
-6. **Diagnostic Mode (if failed)**
-   - Analyze error
-   - Suggest fixes
-   - Explain failure point
-
-7. **Save Report**
-   - Write to verification.log
-   - Update state to VERIFIED
-
-8. **Display Summary**
-   - Execution status
-   - Explanation
-   - Edge cases found
-   - Next steps
+6. **Display Summary**
+- Show verification status
+- Display explanation
+- List edge cases
+- Suggest improvements
 </process>
 
 <examples>
 
-**Verify results:**
+**Verify current algorithm:**
 /algo-verify
 
-**Explain specific step:**
-/algo-verify --step 3
+**Verify specific step:**
+/algo-verify --step 5
 
-**Detailed explanation:**
+**Detailed verification:**
 /algo-verify --detailed
 
-**Compare with expected:**
-/algo-verify --expected "42"
-
-**Diagnostic for failed runs:**
+**Diagnostic mode:**
 /algo-verify --diagnostic
+
+**Compare to expected:**
+/algo-verify --expected "[1, 2, 3]"
 
 </examples>
 
 <options>
 
 --step <N>
-Explain step number N in detail
+Explain specific step number
 
 --detailed
-Show detailed step-by-step explanation
+Show detailed verification
 
 --diagnostic
-Run diagnostic mode for failed executions
+Run diagnostic checks
 
 --expected <value>
-Expected output for comparison
+Compare to expected output
 
 </options>
 
 <next_steps>
-/algo-extract - Start with new algorithm
 /algo-status - Check current state
+/algo-list - View all algorithms
 </next_steps>

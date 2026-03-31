@@ -4,6 +4,7 @@ argument-hint: "[--skip] [--timeout <seconds>]"
 tools:
   read: true
   write: true
+  Bash: true
 ---
 
 <objective>
@@ -13,13 +14,20 @@ Captures stdout, stderr, and execution results.
 
 <execution>
 Execute the generated code by running:
+
+**Option 1 - Using npx (no install required):**
 ```bash
-npx algomath-extract algorun "$@"
+npx -p algomath-extract algorun "$@"
 ```
 
-Or if algomath-extract is installed globally:
+**Option 2 - If installed globally:**
 ```bash
 algorun "$@"
+```
+
+**Option 3 - If installed locally in project:**
+```bash
+./node_modules/.bin/algorun "$@"
 ```
 
 This will:
@@ -32,64 +40,61 @@ This will:
 <process>
 Execute code in sandbox:
 
-1. **Load Generated Code**
-   - Read generated.py from current algorithm
-   - Validate code exists
-   - Check syntax
 
-2. **Create Sandbox**
-   - Create isolated temp directory
-   - Copy code to sandbox
-   - Set resource limits
+1. **Load Generated Code**
+- Read generated.py from current algorithm
+- Validate code exists
+- Check for syntax errors
+
+2. **Prepare Execution**
+- Create isolated sandbox
+- Set resource limits
+- Prepare input data
+- Set timeout (default: 30s)
 
 3. **Execute Code**
-   - Run in subprocess with timeout (default 30s)
-   - Capture stdout and stderr
-   - Monitor resource usage
-   - Handle exceptions
+- Run in subprocess
+- Capture stdout/stderr
+- Monitor execution
+- Handle timeouts
 
-4. **Process Results**
-   - Capture output
-   - Record execution time
-   - Check for errors
-   - Format results
+4. **Capture Results**
+- Save output to execution.log
+- Capture return code
+- Record execution time
+- Store any generated files
 
-5. **Save Results**
-   - Write to execution.log
-   - Update metadata.json
-   - Update state to EXECUTION_COMPLETE
-
-6. **Display Results**
-   - Show output
-   - Show execution time
-   - Show status (success/error)
-   - Suggest next steps
+5. **Display Results**
+- Show stdout
+- Show stderr (if any)
+- Display execution time
+- Show success/failure status
 </process>
 
 <examples>
 
-**Execute code:**
+**Execute current algorithm:**
 /algo-run
 
-**Skip execution:**
-/algo-run --skip
-
-**Custom timeout:**
+**Execute with custom timeout:**
 /algo-run --timeout 60
+
+**Skip execution (for testing):**
+/algo-run --skip
 
 </examples>
 
 <options>
 
 --skip
-Skip execution and proceed directly to verification
+Skip execution, just validate
 
 --timeout <seconds>
-Maximum execution time (default: 30)
+Set execution timeout (default: 30)
 
 </options>
 
 <next_steps>
 /algo-verify - Verify execution results
-/algo-status - Check algorithm state
+/algo-status - Check current state
 </next_steps>

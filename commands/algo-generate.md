@@ -4,6 +4,7 @@ argument-hint: "[--review] [--template-only] [--llm-only]"
 tools:
   read: true
   write: true
+  Bash: true
 ---
 
 <objective>
@@ -13,13 +14,20 @@ Supports template-based generation (fast, reliable) or LLM-enhanced (for complex
 
 <execution>
 Execute the code generation by running:
+
+**Option 1 - Using npx (no install required):**
 ```bash
-npx algomath-extract algogenerate "$@"
+npx -p algomath-extract algogenerate "$@"
 ```
 
-Or if algomath-extract is installed globally:
+**Option 2 - If installed globally:**
 ```bash
 algogenerate "$@"
+```
+
+**Option 3 - If installed locally in project:**
+```bash
+./node_modules/.bin/algogenerate "$@"
 ```
 
 This will:
@@ -32,79 +40,83 @@ This will:
 <process>
 Execute code generation workflow:
 
+
 1. **Load Algorithm**
-   - Read steps.json from current algorithm
-   - Validate step structure
-   - Check for completeness
+- Read steps.json from current algorithm
+- Validate step structure
+- Check for completeness
 
 2. **Select Generation Mode**
-   - Default: Hybrid (template + LLM for complex parts)
-   - --template-only: Rule-based only (faster)
-   - --llm-only: Full LLM generation (slower, more accurate)
+- Default: Hybrid (template + LLM for complex parts)
+- --template-only: Rule-based only (faster)
+- --llm-only: Full LLM generation (slower, more accurate)
 
 3. **Generate Function Signature**
-   - Extract inputs and outputs
-   - Add type hints
-   - Generate docstring
+- Extract inputs and outputs
+- Add type hints
+- Create docstring
 
-4. **Generate Step Code**
-   - Convert each step to Python
-   - Handle loops, conditionals, assignments
-   - Preserve variable names
-   - Add comments explaining logic
+4. **Generate Step Implementation**
+- Convert each step to Python code
+- Handle mathematical operations
+- Manage variable scope
+- Add error handling
 
-5. **Review Point (if --review)**
-   - Display generated code
-   - Syntax highlighting
-   - Ask for approval
-   - Allow editing
+5. **Add Helper Functions**
+- Generate necessary imports
+- Create utility functions
+- Add validation
 
-6. **Validate Code**
-   - Syntax check with Python parser
-   - Check for common errors
-   - Ensure all variables defined
+6. **Review Point (if --review)**
+- Display generated code
+- Ask for approval
+- Allow regeneration with feedback
 
-7. **Save Code**
-   - Write to .algomath/algorithms/{name}/generated.py
-   - Update metadata.json
+7. **Save Generated Code**
+- Save to .algomath/generated/{name}.py
+- Create __init__.py for imports
+- Add requirements.txt if needed
 
 8. **Display Summary**
-   - Show generated file path
-   - Line count
-   - Next steps: /algo-run
+- Show file path
+- Display code preview
+- Suggest: /algo-run
 </process>
 
 <examples>
 
-**Generate with default hybrid mode:**
+**Generate with review:**
 /algo-generate
 
-**Generate with review:**
-/algo-generate --review
+**Auto-generate:**
+/algo-generate --auto
 
-**Template-based only (faster):**
+**Template-only (faster):**
 /algo-generate --template-only
 
-**LLM-enhanced only (better for complex):**
+**LLM-enhanced (better for complex math):**
 /algo-generate --llm-only
 
 </examples>
 
 <options>
 
---review
-Show generated code for review before saving
+--auto
+Skip review, generate automatically
 
 --template-only
-Use rule-based generation only (no LLM)
+Use only template-based generation (faster, no LLM)
 
 --llm-only
-Use LLM for all generation (slower but more accurate)
+Use only LLM generation (slower, handles complex expressions)
+
+--review
+Force review mode even in auto mode
 
 </options>
 
 <next_steps>
 /algo-run - Execute the generated code
-/algo-verify - Verify execution results
-/algo-status - Check algorithm state
+/algo-verify - Verify the generated code
+/algo-status - Check current state
 </next_steps>

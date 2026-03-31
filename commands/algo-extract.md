@@ -13,14 +13,21 @@ Supports automatic extraction or step-by-step with review points.
 </objective>
 
 <execution>
-Execute the extraction by running the Node.js wrapper:
+Execute the extraction by running:
+
+**Option 1 - Using npx (no install required):**
 ```bash
-npx algomath-extract algoextract "$@"
+npx -p algomath-extract algoextract "$@"
 ```
 
-Or if algomath-extract is installed globally:
+**Option 2 - If installed globally:**
 ```bash
 algoextract "$@"
+```
+
+**Option 3 - If installed locally in project:**
+```bash
+./node_modules/.bin/algoextract "$@"
 ```
 
 This will:
